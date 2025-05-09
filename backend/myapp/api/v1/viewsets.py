@@ -45,17 +45,3 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
 class CustomTokenRefreshView(TokenRefreshView):
     serializer_class = CookieTokenRefreshSerializer
-
-    def post(self, request, *args, **kwargs):
-        refresh_token = request.COOKIES.get("refresh")
-
-        if not refresh_token:
-            return Response({"detail": "Refresh token not found."}, status=status.HTTP_400_BAD_REQUEST)
-
-        serializer = TokenRefreshSerializer(data={"refresh": refresh_token})
-        try:
-            serializer.is_valid(raise_exception=True)
-        except Exception as e:
-            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-        return Response(serializer.validated_data)

@@ -11,7 +11,6 @@ class ProductSerializer(serializers.ModelSerializer):
 
 class CookieTokenRefreshSerializer(TokenRefreshSerializer):
     def validate(self, attrs):
-        # se não veio JSON, busca o cookie
         if not attrs.get("refresh"):
             attrs["refresh"] = self.context["request"].COOKIES.get("refresh_token")
         return super().validate(attrs)
